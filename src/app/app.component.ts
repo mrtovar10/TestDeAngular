@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
       {nombrePokemon:'Charizarcox'},
       {nombrePokemon:'Vupix'},
       {nombrePokemon:'VamoaCalmano'},
+      {nombrePokemon:'prueba'}
     ]
   }
 }
