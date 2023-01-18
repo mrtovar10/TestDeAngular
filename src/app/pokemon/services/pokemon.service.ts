@@ -28,7 +28,7 @@ export class PokemonService {
         return {
           numero:id,
           nombre:element.name,
-          foto
+          foto,
         }
       }
     )
