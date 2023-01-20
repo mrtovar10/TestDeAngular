@@ -1,13 +1,20 @@
 <h1>Listado de Pokemons</h1>
 <hr>
 
-<input type="texto"
+<input type="text"
+  matInput
   class="form-control mb-2"
   placeholder="Buscar pokemon"
-  #txtSearch
-  (keyup)="buscarPokemon(txtSearch.value)"
->
-
+  [(ngModel)]="search"
+  (ngModelChange)="buscarPokemon($event)"
+  [matAutocomplete]="auto"
+  >
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+    <mat-option *ngFor='let name of arrayNames | filtroAutocompletado:search' [value]="name">
+      {{name}}
+    </mat-option>
+  </mat-autocomplete>
+      
 <button class="btn btn-primary" (click)="previousPage()">
   Anterior
 </button>
@@ -17,27 +24,119 @@
   [disabled]="(pokemons | filtro:page:search).length === 0">
   Siguiente
 </button>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nro.</th>
-      <th>Nombre</th>
-      <th>foto</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let pokemon of pokemons | filtro:page:search"
-        [ngStyle]="{'height':'100px'}"
-    >
-      <td>{{pokemon.numero}}</td>
-      <td>{{pokemon.nombre}}</td>
-      <td>
-        <img
-          [src]="pokemon.foto"
-          [alt]="pokemon.nombre"
-          [ngStyle]="{'width':'75px'}"
+
+<div class="d-flex p-2">
+  <div class='contenedorTabla'>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nro.</th>
+          <th>Nombre</th>
+          <th>imagen</th>
+          <th>ir</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pokemon of pokemons | filtro:page:search.toLowerCase()"
+            [ngStyle]="{'height':'70px'}"
         >
-      </td>
-    </tr>
-  </tbody>
-</table>
+          <td>{{pokemon.numero}}</td>
+          <td>{{pokemon.nombre}}</td>
+          <td>
+            <img
+              [src]="pokemon.img"
+              [alt]="pokemon.nombre"
+              [ngStyle]="{'width':'40px'}"
+            >
+          </td>
+          
+          <button type="button" class="btn btn-link btn-sm"
+            (click)="buscarEstadisticas(pokemon.numero)">Detalles
+          </button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="card" style="width: 18rem;" *ngIf="mostrar">
+    <div class="divClose">
+      <button type="button" class="btn-close" aria-label="Close"
+      (click)="cerrarDetalles()"
+      ></button>
+    </div>
+    <img class="card-img-top" [src]="estadisticas.image" alt="Card image cap">
+    <div class="card-body pt-0">
+      <h3 class="card-title mb-0">Estadisticas</h3>
+      <div class="element">
+        <p>Nombre:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.nombre}}</p>
+      </div>
+      <div class="element">
+        <p>Altura:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.altura}}</p>
+      </div>
+      <div class="element">
+        <p>HP:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.hp}}</p>
+      </div>
+      <div class="element">
+        <p>Ataque:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.ataque}}</p>
+      </div>
+      <div class="element">
+        <p>Defensa:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.defensa}}</p>
+      </div>
+      <div class="element">
+        <p>Ataque especial:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.ataqueEspecial}}</p>
+      </div>
+      <div class="element">
+        <p>Defensa especial:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.defensaEspecial}}</p>
+      </div>
+      <div class="element">
+        <p>Velocidad:</p>
+        &nbsp;&nbsp;
+        <p>{{estadisticas.velocidad}}</p>
+      </div>
+      <div class="element">
+        <p>Tipo:</p>
+        &nbsp;&nbsp;
+        <p>
+          {{estadisticas.tipo1}}
+          <br/>
+          {{estadisticas.tipo2}}
+          <br/>
+          {{estadisticas.tipo3}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Letra</th>
+        <th>Cantidad de Pokemons</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let letra of letras">
+        <td>{{letra}}</td>
+        <td>{{pokemonsPorLetra(letra)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

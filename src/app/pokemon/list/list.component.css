@@ -1,0 +1,16 @@
+.contenedorTabla {
+  width: 100%;
+  margin-right: 2rem;
+  background-color: rgb(221, 221, 223);
+}
+
+.element {
+  display: flex;
+}
+
+.divClose{
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+  margin-bottom: 0;
+}
